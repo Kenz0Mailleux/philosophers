@@ -3,6 +3,7 @@ CHECK = checker
 
 SRCS =  main.c \
 		ft_atoi.c \
+		utils.c \
 		
 		
 OBJS = ${SRCS:.c=.o}
@@ -17,7 +18,6 @@ ${NAME}: ${OBJS}
 	@${CC} ${OBJS} -o ${NAME}
 
 clean: 
-	@${MAKE} -C
 	@${RM} ${OBJS}
 
 fclean: clean

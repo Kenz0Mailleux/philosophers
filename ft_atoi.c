@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmailleu <kmailleu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kenzo <kenzo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 19:00:39 by kmailleu          #+#    #+#             */
-/*   Updated: 2024/08/20 19:03:55 by kmailleu         ###   ########.fr       */
+/*   Updated: 2024/08/20 21:54:12 by kenzo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 #include <limits.h>
 
-static int	sign_space(const char *str, int *ptr_len)
+static int	sign_space(char *str, int *ptr_len)
 {
 	int	sign;
 	int	len;
@@ -32,7 +32,7 @@ static int	sign_space(const char *str, int *ptr_len)
 	return (sign);
 }
 
-int	ft_atoi(const char *str)
+long	ft_atoi(char *str)
 {
 	int					sign;
 	unsigned long int	result;
@@ -53,10 +53,10 @@ int	ft_atoi(const char *str)
 		if (result > (unsigned)LONG_MAX)
 		{
 			if (sign > 0)
-				return (-1);
+				return (21474836471);
 			if (sign < 0)
-				return (0);
+				return (21474836471);
 		}
 	}
-	return ((int)result * sign);
+	return ((long)result * sign);
 }
