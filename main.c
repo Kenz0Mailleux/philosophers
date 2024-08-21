@@ -6,7 +6,7 @@
 /*   By: kenzo <kenzo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:22:17 by kmailleu          #+#    #+#             */
-/*   Updated: 2024/08/21 19:12:22 by kenzo            ###   ########.fr       */
+/*   Updated: 2024/08/21 20:46:22 by kenzo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	init_philo(t_data *data, int philo_nbr)
 	(data)->lst[philo_nbr].meal = 0;
 	data->lst[philo_nbr].nbr = philo_nbr;
 	data->lst[philo_nbr].time_start = 0;
+	data->lst[philo_nbr].data = data;
 	if (init_fork(data, philo_nbr) != 0)
 		exit(1);
 	return (0);
@@ -42,10 +43,8 @@ int	init_philo(t_data *data, int philo_nbr)
 int	init_data(int argc, char **argv, t_data *data)
 {
 	int	i;
-	pthread_t* thread_lst;
 
 	i = 0;
-
 	data->number_philo = ft_atoi(argv[1]);
 	data->time_die = ft_atoi(argv[2]);
 	data->time_eat = ft_atoi(argv[3]);
@@ -63,6 +62,8 @@ int	init_data(int argc, char **argv, t_data *data)
 		init_philo(data, i);
 		i++;
 	}
+	data->print_m = malloc(sizeof(pthread_mutex_t));
+	pthread_mutex_init(data->print_m, NULL);
 	return (1);
 }
 

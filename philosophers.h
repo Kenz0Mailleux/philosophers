@@ -6,7 +6,7 @@
 /*   By: kenzo <kenzo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:21:19 by kmailleu          #+#    #+#             */
-/*   Updated: 2024/08/21 19:00:27 by kenzo            ###   ########.fr       */
+/*   Updated: 2024/08/21 20:45:08 by kenzo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <pthread.h>
-#include <sys/time.h>
+# include <sys/time.h>
+
 
 typedef struct s_philo t_philo;
 
@@ -32,6 +33,7 @@ typedef struct s_data
 	int				death;
 	int				philo_count;
 
+	pthread_mutex_t	*print_m;
 	pthread_mutex_t	*death_m;
 	t_philo 		*lst;
 }					t_data;
@@ -53,6 +55,6 @@ typedef struct	s_philo
 long	ft_atoi(char *str);
 int		ft_usleep(int time);
 void	launch_thread(t_data *data);
-
+int		get_time();
 
 #endif
