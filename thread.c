@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   thread.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmailleu <kmailleu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kenzo <kenzo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:12:43 by kenzo             #+#    #+#             */
-/*   Updated: 2024/08/23 19:11:00 by kmailleu         ###   ########.fr       */
+/*   Updated: 2024/08/23 21:37:28 by kenzo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,22 @@ void	philo_eat(t_philo *philo)
 void	*eat_time(void *arg)
 {
 	t_philo	*philo;
+	t_data *data;
 	int		i;
 
 	i = 0;
 	philo = (t_philo *)arg;
+	data = philo->data;
 	while (!(philo->data->ready))
 	 	continue ;
 	if ((philo->nbr % 2) == 1)
 		ft_usleep((philo->eat_time/2));
-	while (philo->max_meal > i++)
+	while (1)
 	{
+		if (data->nbr_eat == -1)
+			i = i;
+		else if (philo->max_meal < i++)
+			break;
 		philo_eat(philo);
 		print_state("is sleeping", philo, 0);
 		ft_usleep(philo->sleep_time);
@@ -77,14 +83,14 @@ void	is_dead(t_data	*data)
 		i = 0;
 		while (i < data->number_philo && !data->death && data->lst[i].max_meal > data->lst[i].meal)
 		{
-			if ((get_time() - (data->lst[i].last_meal)) > (data->time_die))
+			pthread_mutex_lock(data->lst[i].meal_m);
+			if ((get_time() - (data->lst[i].last_meal)) >= (data->time_die))
 			{
-				pthread_mutex_lock(data->lst[i].meal_m);
 				print_state("died \n", &data->lst[i], 1);
 				data->death = 1;
-				pthread_mutex_lock(data->lst[i].meal_m);
 				return ;
 			}
+			pthread_mutex_unlock(data->lst[i].meal_m);
 			i++;
 		}
 		j = 0;
@@ -98,8 +104,8 @@ void	is_dead(t_data	*data)
 		if (data->complete == 1)
 			return ;
 	}
+	return ;
 }
-
 
 void	launch_thread(t_data *data)
 {

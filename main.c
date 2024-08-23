@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmailleu <kmailleu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kenzo <kenzo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:22:17 by kmailleu          #+#    #+#             */
-/*   Updated: 2024/08/23 19:11:20 by kmailleu         ###   ########.fr       */
+/*   Updated: 2024/08/23 21:34:26 by kenzo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	init_data(int argc, char **argv, t_data *data)
 	if (argc == 6)
 		data->nbr_eat = ft_atoi(argv[5]);
 	else 
-		data->nbr_eat = 0;
+		data->nbr_eat = -1;
 	data->time_start = get_time();
 	data->death = 0;
 	data->lst =  malloc(sizeof(t_philo) * (data->number_philo + 1));

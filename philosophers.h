@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmailleu <kmailleu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kenzo <kenzo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:21:19 by kmailleu          #+#    #+#             */
-/*   Updated: 2024/08/23 18:53:04 by kmailleu         ###   ########.fr       */
+/*   Updated: 2024/08/23 21:31:58 by kenzo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_data
 	int				death;
 	int				complete;
 	int				ready;
+	int				infinite;
 
 	pthread_mutex_t	*print_m;
 	pthread_mutex_t	*death_m;
