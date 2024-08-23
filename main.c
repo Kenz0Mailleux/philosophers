@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kenzo <kenzo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kmailleu <kmailleu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:22:17 by kmailleu          #+#    #+#             */
-/*   Updated: 2024/08/21 20:46:22 by kenzo            ###   ########.fr       */
+/*   Updated: 2024/08/23 17:18:26 by kmailleu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int	init_fork(t_data *data, int philo_nbr)
 	{
 		data->lst[0].left_fork = data->lst[philo_nbr].right_fork;
 	}
+	data->lst[philo_nbr].meal_m = malloc(sizeof(pthread_mutex_t));
+	pthread_mutex_init(data->lst[philo_nbr].meal_m , NULL);
 	return 0;
 	
 }
@@ -32,11 +34,16 @@ int	init_philo(t_data *data, int philo_nbr)
 {
 	(data)->lst[philo_nbr].last_meal = 0;
 	(data)->lst[philo_nbr].meal = 0;
+	(data)->lst[philo_nbr].max_meal = data->nbr_eat;
+	(data)->lst[philo_nbr].sleep_time = data->time_sleep;
+	(data)->lst[philo_nbr].start_time = data->time_start;
+	data->lst[philo_nbr].end = 0;
 	data->lst[philo_nbr].nbr = philo_nbr;
-	data->lst[philo_nbr].time_start = 0;
 	data->lst[philo_nbr].data = data;
+	data->lst[philo_nbr].eat_time = data->time_eat;
 	if (init_fork(data, philo_nbr) != 0)
 		exit(1);
+	data->lst[philo_nbr].last_meal = data->time_start;
 	return (0);
 }
 
@@ -49,10 +56,12 @@ int	init_data(int argc, char **argv, t_data *data)
 	data->time_die = ft_atoi(argv[2]);
 	data->time_eat = ft_atoi(argv[3]);
 	data->time_sleep = ft_atoi(argv[4]);
+	data->nbr_eat = -1;
 	if (argc == 6)
 		data->nbr_eat = ft_atoi(argv[5]);
 	else 
 		data->nbr_eat = 0;
+	data->time_start = get_time();
 	data->death = 0;
 	data->lst =  malloc(sizeof(t_philo) * (data->number_philo + 1));
 	if (!(data->lst))
@@ -64,6 +73,8 @@ int	init_data(int argc, char **argv, t_data *data)
 	}
 	data->print_m = malloc(sizeof(pthread_mutex_t));
 	pthread_mutex_init(data->print_m, NULL);
+	data->death_m = malloc(sizeof(pthread_mutex_t));
+	pthread_mutex_init(data->death_m, NULL);
 	return (1);
 }
 

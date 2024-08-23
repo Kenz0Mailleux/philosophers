@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kenzo <kenzo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kmailleu <kmailleu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:21:19 by kmailleu          #+#    #+#             */
-/*   Updated: 2024/08/21 20:45:08 by kenzo            ###   ########.fr       */
+/*   Updated: 2024/08/23 18:12:05 by kmailleu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <unistd.h>
 # include <pthread.h>
 # include <sys/time.h>
+# include <sys/types.h>
 
 
 typedef struct s_philo t_philo;
@@ -30,8 +31,9 @@ typedef struct s_data
 	int				time_sleep;
 	int 			nbr_eat;
 	int				time_start;
-	int				death;
 	int				philo_count;
+	int				death;
+	int				complete;
 
 	pthread_mutex_t	*print_m;
 	pthread_mutex_t	*death_m;
@@ -41,20 +43,27 @@ typedef struct s_data
 
 typedef struct	s_philo
 {
-	int				nbr;
-	int				meal;
-	long int		last_meal;
-	long int		time_start;
+	int					nbr;
+	int					max_meal;
+	int					eat_time;
+	int					start_time;
+	int					sleep_time;
+	int					end;
+	int					meal;
+	long int			last_meal;
 
-	pthread_t		thread_id;
-	pthread_mutex_t	*right_fork;
-	pthread_mutex_t	*left_fork;
-	t_data			*data;
-}					t_philo;
+	pthread_t			thread_id;
+	pthread_mutex_t		*meal_m;
+	pthread_mutex_t		*right_fork;
+	pthread_mutex_t		*left_fork;
+	t_data				*data;
+}						t_philo;
 
 long	ft_atoi(char *str);
 int		ft_usleep(int time);
 void	launch_thread(t_data *data);
 int		get_time();
+void	ft_putnbr_fd(int n, int fd);
+void	ft_putstr_fd(char *s, int fd);
 
 #endif
