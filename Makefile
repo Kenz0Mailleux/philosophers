@@ -2,14 +2,14 @@ NAME = philo
 CHECK = checker
 
 SRCS =  main.c \
-		ft_atoi.c \
-		utils.c \
-		thread.c \
+		srcs/utils.c \
+		srcs/thread.c \
+		srcs/init.c \
 		
 OBJS = ${SRCS:.c=.o}
 
 CC = cc
-CFLAGS = -Wall #-fsanitize=thread -g
+CFLAGS = -Wall -Werror -Wextra #-fsanitize=thread -g
 
 RM = rm -rf
 

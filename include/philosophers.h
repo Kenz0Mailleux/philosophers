@@ -6,7 +6,7 @@
 /*   By: kenzo <kenzo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:21:19 by kmailleu          #+#    #+#             */
-/*   Updated: 2024/08/23 22:01:40 by kenzo            ###   ########.fr       */
+/*   Updated: 2024/08/23 22:30:00 by kenzo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,18 @@ typedef struct s_philo
 	t_data			*data;
 }					t_philo;
 
+//fct utils
 long	ft_atoi(char *str);
-int		ft_usleep(int time);
-void	launch_thread(t_data *data);
 int		get_time(void);
+int		ft_usleep(int time);
+
+//philo
+void	is_dead(t_data *data);
+void	launch_thread(t_data *data);
+void	*eat_time(void *arg);
+
+//fct init et free
+int		init_data(int argc, char **argv, t_data *data);
+void	free_mutex(t_data *data);
 
 #endif

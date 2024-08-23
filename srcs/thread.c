@@ -6,24 +6,27 @@
 /*   By: kenzo <kenzo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:12:43 by kenzo             #+#    #+#             */
-/*   Updated: 2024/08/23 22:04:21 by kenzo            ###   ########.fr       */
+/*   Updated: 2024/08/23 23:46:58 by kenzo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "../include/philosophers.h"
 
 void	print_state(char *str, t_philo *philo, int dead)
 {
 	int	time;
 
+	(void)dead;
 	pthread_mutex_lock(philo->data->print_m);
-	time = get_time() - philo->start_time;
-	printf("%d Philosopher %d %s\n", time, philo->nbr + 1, str);
-	if (!dead)
-		pthread_mutex_unlock(philo->data->print_m);
+	if (!philo->data->death)
+	{
+		time = get_time() - philo->start_time;
+		printf("%d Philosopher %d %s\n", time, philo->nbr + 1, str);
+	}
+	pthread_mutex_unlock(philo->data->print_m);
 }
 
-void	philo_eat(t_philo *philo)
+static void	philo_eat(t_philo *philo)
 {
 	pthread_mutex_lock(philo->right_fork);
 	print_state("has taken right fork", philo, 0);
@@ -31,8 +34,8 @@ void	philo_eat(t_philo *philo)
 	print_state("has taken left fork", philo, 0);
 	pthread_mutex_lock(philo->meal_m);
 	philo->last_meal = get_time();
-	ft_usleep(philo->eat_time);
 	print_state("is eating", philo, 0);
+	ft_usleep(philo->eat_time);
 	philo->meal++;
 	pthread_mutex_unlock(philo->meal_m);
 	pthread_mutex_unlock(philo->left_fork);
@@ -42,12 +45,10 @@ void	philo_eat(t_philo *philo)
 void	*eat_time(void *arg)
 {
 	t_philo	*philo;
-	t_data	*data;
 	int		i;
 
-	i = 1;
+	i = 0;
 	philo = (t_philo *)arg;
-	data = philo->data;
 	while (!(philo->data->ready))
 		continue ;
 	if ((philo->nbr % 2) == 1)
@@ -56,47 +57,53 @@ void	*eat_time(void *arg)
 	{
 		if (philo->max_meal == -1)
 			i = i;
-		else if (philo->max_meal < i++)
+		else if (!(philo->max_meal > i))
 			break ;
 		philo_eat(philo);
 		print_state("is sleeping", philo, 0);
 		ft_usleep(philo->sleep_time);
 		print_state("is thinking", philo, 0);
+		i++;
 	}
 	philo->end = 1;
 	return (NULL);
 }
 
-void	check_death(t_data *data, int i)
+int	check_death(t_data *data, int i)
 {
 	pthread_mutex_lock(data->lst[i].meal_m);
 	if ((get_time() - (data->lst[i].last_meal)) >= (data->time_die))
 	{
-		print_state("died \n", &data->lst[i], 1);
+		print_state("died \n\n", &data->lst[i], 1);
 		data->death = 1;
 		pthread_mutex_unlock(data->lst[i].meal_m);
-		return ;
+		return (1);
 	}
 	pthread_mutex_unlock(data->lst[i].meal_m);
+	return (0);
 }
-
 void	is_dead(t_data *data)
 {
 	int	i;
 	int	j;
+	int	max;
 
+	max = data->nbr_eat;
 	while (!(data->ready))
 		continue ;
-	while (!data->death)
+	while (1)
 	{
 		i = 0;
-		while (i < data->number_philo && !data->death)
+		while (i < data->number_philo)
 		{
-			if (data->lst[i].max_meal == -1)
+			if (max == -1)
 				i = i;
-			else if (data->lst[i].max_meal < i++)
+			else if (!(max > data->lst[i].meal))
 				break ;
-			check_death(data, i);
+			if (check_death(data, i))
+			{
+				return;
+			}
 			i++;
 		}
 		data->complete = 1;
@@ -110,21 +117,4 @@ void	is_dead(t_data *data)
 		if (data->complete == 1)
 			return ;
 	}
-}
-
-void	launch_thread(t_data *data)
-{
-	int	i;
-
-	i = -1;
-	data->time_start = get_time();
-	while (++i < data->number_philo)
-	{
-		data->lst[i].last_meal = data->time_start;
-		pthread_create(&data->lst[i].thread_id,
-			NULL, eat_time, &(data->lst[i]));
-	}
-	data->ready = 1;
-	is_dead(data);
-	exit(0);
 }
