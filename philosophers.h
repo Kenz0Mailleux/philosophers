@@ -6,7 +6,7 @@
 /*   By: kmailleu <kmailleu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:21:19 by kmailleu          #+#    #+#             */
-/*   Updated: 2024/08/23 18:12:05 by kmailleu         ###   ########.fr       */
+/*   Updated: 2024/08/23 18:53:04 by kmailleu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct s_data
 	int				philo_count;
 	int				death;
 	int				complete;
+	int				ready;
 
 	pthread_mutex_t	*print_m;
 	pthread_mutex_t	*death_m;
@@ -63,7 +64,4 @@ long	ft_atoi(char *str);
 int		ft_usleep(int time);
 void	launch_thread(t_data *data);
 int		get_time();
-void	ft_putnbr_fd(int n, int fd);
-void	ft_putstr_fd(char *s, int fd);
-
 #endif

@@ -6,7 +6,7 @@
 /*   By: kmailleu <kmailleu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:22:17 by kmailleu          #+#    #+#             */
-/*   Updated: 2024/08/23 17:18:26 by kmailleu         ###   ########.fr       */
+/*   Updated: 2024/08/23 19:11:20 by kmailleu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	init_fork(t_data *data, int philo_nbr)
 		data->lst[0].left_fork = data->lst[philo_nbr].right_fork;
 	}
 	data->lst[philo_nbr].meal_m = malloc(sizeof(pthread_mutex_t));
-	pthread_mutex_init(data->lst[philo_nbr].meal_m , NULL);
+	pthread_mutex_init(data->lst[philo_nbr].meal_m, NULL);
 	return 0;
 	
 }
@@ -81,6 +81,7 @@ int	init_data(int argc, char **argv, t_data *data)
 int	main(int argc, char *argv[])
 {
 	t_data data;
+	int	i;
 
 	if (!(argc == 5 || argc == 6) || !init_data(argc, argv, &data))
 	{
@@ -88,5 +89,11 @@ int	main(int argc, char *argv[])
 		return (1);
 	}
 	launch_thread(&data);
+	i = 0;
+	while (i < data.number_philo)
+	{
+		pthread_join(data.lst[i].thread_id, NULL);
+		i++;
+	}
 	return (0);
 }
