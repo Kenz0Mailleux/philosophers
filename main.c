@@ -6,7 +6,7 @@
 /*   By: kenzo <kenzo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:22:17 by kmailleu          #+#    #+#             */
-/*   Updated: 2024/08/23 23:04:24 by kenzo            ###   ########.fr       */
+/*   Updated: 2024/08/23 23:50:30 by kenzo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ int	main(int argc, char *argv[])
 		pthread_join(data.lst[i].thread_id, NULL);
 		i++;
 	}
-	write(1, "memzf;lezkfmozekfomzek", 2);
 	free_mutex(&data);
 	exit(0);
 	return (0);

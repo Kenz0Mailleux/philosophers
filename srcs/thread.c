@@ -6,7 +6,7 @@
 /*   By: kenzo <kenzo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:12:43 by kenzo             #+#    #+#             */
-/*   Updated: 2024/08/23 23:46:58 by kenzo            ###   ########.fr       */
+/*   Updated: 2024/08/23 23:54:38 by kenzo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	print_state(char *str, t_philo *philo, int dead)
 
 	(void)dead;
 	pthread_mutex_lock(philo->data->print_m);
-	if (!philo->data->death)
+	if (!(philo->data->death))
 	{
 		time = get_time() - philo->start_time;
 		printf("%d Philosopher %d %s\n", time, philo->nbr + 1, str);
@@ -53,7 +53,7 @@ void	*eat_time(void *arg)
 		continue ;
 	if ((philo->nbr % 2) == 1)
 		ft_usleep((philo->eat_time / 2));
-	while (1)
+	while (!philo->data->death)
 	{
 		if (philo->max_meal == -1)
 			i = i;
