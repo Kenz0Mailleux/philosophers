@@ -6,7 +6,7 @@
 /*   By: kenzo <kenzo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 22:20:42 by kenzo             #+#    #+#             */
-/*   Updated: 2024/08/23 22:25:20 by kenzo            ###   ########.fr       */
+/*   Updated: 2024/08/24 17:26:39 by kenzo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,3 +79,6 @@ long	ft_atoi(char *str)
 	}
 	return ((long)result * sign);
 }
+
+
+//pas oublié le 1 philo qui doit encore etre corrigé
