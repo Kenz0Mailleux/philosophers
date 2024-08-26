@@ -6,7 +6,7 @@
 /*   By: kmailleu <kmailleu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 22:20:42 by kenzo             #+#    #+#             */
-/*   Updated: 2024/08/26 16:19:14 by kmailleu         ###   ########.fr       */
+/*   Updated: 2024/08/26 18:35:27 by kmailleu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,20 @@ int	ft_usleep(int time)
 	while ((get_time() - start) < time)
 		usleep(150);
 	return (0);
+}
+
+int	ft_isdigit(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 static int	sign_space(char *str, int *ptr_len)
@@ -79,6 +93,3 @@ long	ft_atoi(char *str)
 	}
 	return ((long)result * sign);
 }
-
-
-//pas oublié le 1 philo qui doit encore etre corrigé

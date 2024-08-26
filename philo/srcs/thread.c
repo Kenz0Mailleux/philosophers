@@ -6,25 +6,11 @@
 /*   By: kmailleu <kmailleu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:12:43 by kenzo             #+#    #+#             */
-/*   Updated: 2024/08/26 16:17:54 by kmailleu         ###   ########.fr       */
+/*   Updated: 2024/08/26 18:37:27 by kmailleu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
-
-void	print_state(char *str, t_philo *philo, int dead)
-{
-	int	time;
-
-	(void)dead;
-	pthread_mutex_lock(philo->data->print_m);
-	if (!(philo->data->death))
-	{
-		time = get_time() - philo->start_time;
-		printf("%d Philosopher %d %s\n", time, philo->nbr + 1, str);
-	}
-	pthread_mutex_unlock(philo->data->print_m);
-}
 
 static void	philo_eat(t_philo *philo)
 {
@@ -72,9 +58,9 @@ void	*eat_time(void *arg)
 int	check_death(t_data *data, int i)
 {
 	pthread_mutex_lock(data->lst[i].meal_m);
-	if ((get_time() - (data->lst[i].last_meal)) >= (data->time_die))
+	if ((get_time() - data->lst[i].last_meal) >= data->time_die)
 	{
-		print_state("died \n\n", &data->lst[i], 1);
+		print_state("died", &data->lst[i], 1);
 		data->death = 1;
 		pthread_mutex_unlock(data->lst[i].meal_m);
 		return (1);
@@ -82,33 +68,38 @@ int	check_death(t_data *data, int i)
 	pthread_mutex_unlock(data->lst[i].meal_m);
 	return (0);
 }
-void	is_dead(t_data *data)
+
+void	check_philosophers(t_data *data, int max)
 {
 	int	i;
-	int	j;
+
+	i = 0;
+	while (i < data->number_philo)
+	{
+		if (max != -1 && max <= data->lst[i].meal)
+			break ;
+		if (check_death(data, i))
+			return ;
+		i++;
+	}
+}
+
+void	is_dead(t_data *data)
+{
 	int	max;
+	int	j;
 
 	max = data->nbr_eat;
 	while (!(data->ready))
 		continue ;
 	while (1)
 	{
-		i = 0;
-		while (i < data->number_philo)
-		{
-			if (max == -1)
-				;
-			else if (!(max > data->lst[i].meal))
-				break ;
-			if (check_death(data, i))
-			{
-				return;
-			}
-			i++;
-		}
+		check_philosophers(data, max);
+		if (data->death)
+			return ;
 		data->complete = 1;
 		j = 0;
-		while (data->number_philo > j)
+		while (j < data->number_philo)
 		{
 			if (data->lst[j].end == 0)
 				data->complete = 0;

@@ -6,7 +6,7 @@
 /*   By: kmailleu <kmailleu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:21:19 by kmailleu          #+#    #+#             */
-/*   Updated: 2024/08/26 16:02:13 by kmailleu         ###   ########.fr       */
+/*   Updated: 2024/08/26 18:39:51 by kmailleu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ typedef struct s_data
 	int				time_sleep;
 	int				nbr_eat;
 	int				time_start;
-	int				death;
+	_Atomic int		death;
 	int				complete;
-	_Atomic int				ready;
+	_Atomic int		ready;
 
 	pthread_mutex_t	*print_m;
 	pthread_mutex_t	*death_m;
@@ -46,8 +46,8 @@ typedef struct s_philo
 	int				eat_time;
 	int				start_time;
 	int				sleep_time;
-	int				end;
-	int				meal;
+	_Atomic int		end;
+	_Atomic int		meal;
 	long int		last_meal;
 
 	pthread_t		thread_id;
@@ -61,10 +61,12 @@ typedef struct s_philo
 long	ft_atoi(char *str);
 int		get_time(void);
 int		ft_usleep(int time);
+int		ft_isdigit(char *str);
 
 //philo
 void	is_dead(t_data *data);
 void	*eat_time(void *arg);
+void	print_state(char *str, t_philo *philo, int dead);
 
 //fct init et free
 int		init_data(int argc, char **argv, t_data *data);
