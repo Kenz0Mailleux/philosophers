@@ -6,7 +6,7 @@
 /*   By: kmailleu <kmailleu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:21:19 by kmailleu          #+#    #+#             */
-/*   Updated: 2024/08/26 15:10:57 by kmailleu         ###   ########.fr       */
+/*   Updated: 2024/08/26 16:02:13 by kmailleu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef struct s_data
 	int				time_start;
 	int				death;
 	int				complete;
-	int				ready;
+	_Atomic int				ready;
 
 	pthread_mutex_t	*print_m;
 	pthread_mutex_t	*death_m;
@@ -64,7 +64,6 @@ int		ft_usleep(int time);
 
 //philo
 void	is_dead(t_data *data);
-void	launch_thread(t_data *data);
 void	*eat_time(void *arg);
 
 //fct init et free

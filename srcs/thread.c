@@ -6,7 +6,7 @@
 /*   By: kmailleu <kmailleu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:12:43 by kenzo             #+#    #+#             */
-/*   Updated: 2024/08/26 15:09:51 by kmailleu         ###   ########.fr       */
+/*   Updated: 2024/08/26 16:17:54 by kmailleu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ void	*eat_time(void *arg)
 
 	i = 0;
 	philo = (t_philo *)arg;
+	while (!(philo->data->ready))
+		continue ;
 	if ((philo->nbr % 2) == 1)
 		ft_usleep((philo->eat_time / 2));
 	while (!philo->data->death)
@@ -87,6 +89,8 @@ void	is_dead(t_data *data)
 	int	max;
 
 	max = data->nbr_eat;
+	while (!(data->ready))
+		continue ;
 	while (1)
 	{
 		i = 0;

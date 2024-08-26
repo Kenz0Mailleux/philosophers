@@ -6,7 +6,7 @@
 /*   By: kmailleu <kmailleu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:22:17 by kmailleu          #+#    #+#             */
-/*   Updated: 2024/08/26 15:05:10 by kmailleu         ###   ########.fr       */
+/*   Updated: 2024/08/26 16:17:34 by kmailleu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	launch_thread(t_data *data)
 		pthread_create(&data->lst[i].thread_id,
 			NULL, eat_time, &(data->lst[i]));
 	}
+	data->ready = 1;
 	is_dead(data);
 }
 
