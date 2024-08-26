@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   thread.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kenzo <kenzo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kmailleu <kmailleu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:12:43 by kenzo             #+#    #+#             */
-/*   Updated: 2024/08/23 23:54:38 by kenzo            ###   ########.fr       */
+/*   Updated: 2024/08/26 15:09:51 by kmailleu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,12 @@ void	*eat_time(void *arg)
 
 	i = 0;
 	philo = (t_philo *)arg;
-	while (!(philo->data->ready))
-		continue ;
 	if ((philo->nbr % 2) == 1)
 		ft_usleep((philo->eat_time / 2));
 	while (!philo->data->death)
 	{
 		if (philo->max_meal == -1)
-			i = i;
+			;
 		else if (!(philo->max_meal > i))
 			break ;
 		philo_eat(philo);
@@ -89,15 +87,13 @@ void	is_dead(t_data *data)
 	int	max;
 
 	max = data->nbr_eat;
-	while (!(data->ready))
-		continue ;
 	while (1)
 	{
 		i = 0;
 		while (i < data->number_philo)
 		{
 			if (max == -1)
-				i = i;
+				;
 			else if (!(max > data->lst[i].meal))
 				break ;
 			if (check_death(data, i))
