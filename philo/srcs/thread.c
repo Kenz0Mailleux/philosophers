@@ -6,7 +6,7 @@
 /*   By: kmailleu <kmailleu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:12:43 by kmailleu          #+#    #+#             */
-/*   Updated: 2024/08/26 19:01:43 by kmailleu         ###   ########.fr       */
+/*   Updated: 2024/08/27 17:32:13 by kmailleu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,21 +55,25 @@ void	*eat_time(void *arg)
 	return (NULL);
 }
 
-int	check_death(t_data *data, int i)
+static int	check_death(t_data *data, int i)
 {
-	pthread_mutex_lock(data->lst[i].meal_m);
-	if ((get_time() - data->lst[i].last_meal) >= data->time_die)
+	int	time;
+
+	if ((get_time() - data->lst[i].last_meal) > data->time_die)
 	{
-		print_state("died", &data->lst[i], 1);
+		pthread_mutex_lock(data->lst[i].meal_m);
+		pthread_mutex_lock(data->print_m);
+		time = get_time() - data->lst[i].start_time;
+		printf("%d Philosopher %d died\n", time, data->lst[i].nbr + 1);
 		data->death = 1;
+		pthread_mutex_unlock(data->print_m);
 		pthread_mutex_unlock(data->lst[i].meal_m);
 		return (1);
 	}
-	pthread_mutex_unlock(data->lst[i].meal_m);
 	return (0);
 }
 
-void	check_philosophers(t_data *data, int max)
+static void	check_philosophers(t_data *data, int max)
 {
 	int	i;
 
@@ -90,8 +94,6 @@ void	is_dead(t_data *data)
 	int	j;
 
 	max = data->nbr_eat;
-	while (!(data->ready))
-		continue ;
 	while (1)
 	{
 		check_philosophers(data, max);

@@ -6,7 +6,7 @@
 /*   By: kmailleu <kmailleu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 16:01:15 by kmailleu          #+#    #+#             */
-/*   Updated: 2024/08/26 16:17:13 by kmailleu         ###   ########.fr       */
+/*   Updated: 2024/08/27 17:28:52 by kmailleu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ int	init_data(int argc, char **argv, t_data *data)
 	data->nbr_eat = -1;
 	if (argc == 6)
 		data->nbr_eat = ft_atoi(argv[5]);
+	if (data->time_die < 1 || data->time_eat < 1 || data->time_sleep < 1)
+		exit (1);
 	data->time_start = get_time();
 	data->death = 0;
 	data->lst = malloc(sizeof(t_philo) * data->number_philo);
@@ -66,11 +68,9 @@ int	init_data(int argc, char **argv, t_data *data)
 	while (++i < data->number_philo)
 		init_philo(data, i);
 	data->print_m = malloc(sizeof(pthread_mutex_t));
-	data->death_m = malloc(sizeof(pthread_mutex_t));
-	if (!data->print_m || !data->death_m)
+	if (!data->print_m)
 		exit(1);
 	pthread_mutex_init(data->print_m, NULL);
-	pthread_mutex_init(data->death_m, NULL);
 	return (1);
 }
 
@@ -88,8 +88,6 @@ void	free_mutex(t_data *data)
 		i++;
 	}
 	pthread_mutex_destroy(data->print_m);
-	pthread_mutex_destroy(data->death_m);
 	free(data->print_m);
-	free(data->death_m);
 	free(data->lst);
 }

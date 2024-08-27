@@ -6,7 +6,7 @@
 /*   By: kmailleu <kmailleu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:21:19 by kmailleu          #+#    #+#             */
-/*   Updated: 2024/08/26 18:39:51 by kmailleu         ###   ########.fr       */
+/*   Updated: 2024/08/27 17:29:01 by kmailleu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,27 +35,26 @@ typedef struct s_data
 	_Atomic int		ready;
 
 	pthread_mutex_t	*print_m;
-	pthread_mutex_t	*death_m;
 	t_philo			*lst;
 }					t_data;
 
 typedef struct s_philo
 {
-	int				nbr;
-	int				max_meal;
-	int				eat_time;
-	int				start_time;
-	int				sleep_time;
-	_Atomic int		end;
-	_Atomic int		meal;
-	long int		last_meal;
+	int					nbr;
+	int					max_meal;
+	int					eat_time;
+	int					start_time;
+	int					sleep_time;
+	_Atomic int			end;
+	_Atomic int			meal;
+	_Atomic long int	last_meal;
 
-	pthread_t		thread_id;
-	pthread_mutex_t	*meal_m;
-	pthread_mutex_t	*right_fork;
-	pthread_mutex_t	*left_fork;
-	t_data			*data;
-}					t_philo;
+	pthread_t			thread_id;
+	pthread_mutex_t		*meal_m;
+	pthread_mutex_t		*right_fork;
+	pthread_mutex_t		*left_fork;
+	t_data				*data;
+}						t_philo;
 
 //fct utils
 long	ft_atoi(char *str);

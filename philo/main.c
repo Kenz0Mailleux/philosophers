@@ -6,7 +6,7 @@
 /*   By: kmailleu <kmailleu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:22:17 by kmailleu          #+#    #+#             */
-/*   Updated: 2024/08/26 18:36:08 by kmailleu         ###   ########.fr       */
+/*   Updated: 2024/08/27 17:33:24 by kmailleu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ void	print_state(char *str, t_philo *philo, int dead)
 	int	time;
 
 	(void)dead;
-	pthread_mutex_lock(philo->data->print_m);
 	if (!(philo->data->death))
 	{
+		pthread_mutex_lock(philo->data->print_m);
 		time = get_time() - philo->start_time;
 		printf("%d Philosopher %d %s\n", time, philo->nbr + 1, str);
+		pthread_mutex_unlock(philo->data->print_m);
 	}
-	pthread_mutex_unlock(philo->data->print_m);
 }
 
 void	launch_thread(t_data *data)
@@ -42,15 +42,15 @@ void	launch_thread(t_data *data)
 	is_dead(data);
 }
 
-void	one_philo(t_data *data)
+void	*one_philo(void *arg)
 {
-	if (data->number_philo == 1)
-	{
-		print_state("has taken right fork", &data->lst[0], 0);
-		ft_usleep(data->time_die);
-		print_state("died", &data->lst[0], 0);
-		exit (0);
-	}
+	t_data	*data;
+
+	data = (t_data *) arg;
+	print_state("has taken right fork", &data->lst[0], 0);
+	ft_usleep(data->time_die);
+	print_state("died", &data->lst[0], 0);
+	exit (0);
 }
 
 int	main(int argc, char *argv[])
@@ -69,10 +69,12 @@ int	main(int argc, char *argv[])
 	}
 	if (!init_data(argc, argv, &data))
 		return (1);
-	one_philo(&data);
+	if (data.number_philo == 1)
+		pthread_create(&data.lst[0].thread_id,
+			NULL, eat_time, &(data.lst[0]));
 	launch_thread(&data);
 	i = 0;
-	while (i < data.number_philo)
+	while (data.number_philo > 1 && i < data.number_philo)
 	{
 		pthread_join(data.lst[i].thread_id, NULL);
 		i++;

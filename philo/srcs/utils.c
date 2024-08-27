@@ -6,7 +6,7 @@
 /*   By: kmailleu <kmailleu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 22:20:42 by kmailleu          #+#    #+#             */
-/*   Updated: 2024/08/26 19:01:51 by kmailleu         ###   ########.fr       */
+/*   Updated: 2024/08/27 16:19:08 by kmailleu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,10 @@ long	ft_atoi(char *str)
 		result += str[len] - '0';
 		len++;
 		len_nb++;
-		if (result > 2147483647)
+		if (result > 2147483647 || result < 1)
 		{
-			if (sign > 0)
-				exit (1);
-			if (sign < 0)
-				exit (1);
+			printf("One arg is too big or = 0");
+			exit (1);
 		}
 	}
 	return ((long)result * sign);
