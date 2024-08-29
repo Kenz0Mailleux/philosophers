@@ -6,7 +6,7 @@
 /*   By: kmailleu <kmailleu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:22:17 by kmailleu          #+#    #+#             */
-/*   Updated: 2024/08/27 17:33:24 by kmailleu         ###   ########.fr       */
+/*   Updated: 2024/08/29 14:48:51 by kmailleu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ void	print_state(char *str, t_philo *philo, int dead)
 	int	time;
 
 	(void)dead;
+	pthread_mutex_lock(philo->data->print_m);
+	time = get_time() - philo->start_time;
 	if (!(philo->data->death))
 	{
-		pthread_mutex_lock(philo->data->print_m);
-		time = get_time() - philo->start_time;
 		printf("%d Philosopher %d %s\n", time, philo->nbr + 1, str);
-		pthread_mutex_unlock(philo->data->print_m);
 	}
+	pthread_mutex_unlock(philo->data->print_m);
 }
 
 void	launch_thread(t_data *data)
@@ -79,5 +79,5 @@ int	main(int argc, char *argv[])
 		pthread_join(data.lst[i].thread_id, NULL);
 		i++;
 	}
-	return (free_mutex(&data), exit(0), 0);
+	return (pthread_mutex_unlock(data.print_m), free_mutex(&data), exit(0), 0);
 }
